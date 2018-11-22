@@ -1,0 +1,41 @@
+{
+  "name": "mongoserver",
+  "version": "1.0.0",
+  "description": "minimal mongoDb server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./bin --exec babel-node"
+  },
+  "author": "Lucas Cerqueira",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-errors": "^1.9.0",
+    "apollo-resolvers": "^1.4.1",
+    "apollo-server-express": "^2.2.2",
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.18.3",
+    "chalk": "^2.4.1",
+    "cors": "^2.8.5",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "graphql": "^14.0.2",
+    "graphql-tools": "^4.0.3",
+    "helmet": "^3.15.0",
+    "jsonwebtoken": "^8.4.0",
+    "merge-graphql-schemas": "^1.5.8",
+    "moment": "^2.22.2",
+    "mongoose": "^5.3.13",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "subscriptions-transport-ws": "^0.9.15"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.18.6"
+  }
+}

@@ -1,0 +1,34 @@
+type User {
+    id: ID!
+    name: String
+    pictureUrl: String
+    cpf: String!
+}
+
+input RegisterUserInput {
+    cpf: String!
+    deviceToken: String!
+    password: String!
+}
+
+input ConfirmUserInput {
+    cpf: String!
+    name: String!
+}
+
+input UpdateUserFCMTokenInput {
+    token: String!
+}
+
+type Query {
+    me: User
+    userById(userId: String!): User 
+    userByCpf(userCpf: String!): User 
+    cpfHasAccount(cpf: String!): Boolean 
+}
+
+type Mutation {
+    registerUser(input: RegisterUserInput!): User 
+    UpdateUserFCMToken(input: UpdateUserFCMTokenInput): Boolean
+    ConfirmUserCpfAndName(input: ConfirmUserInput): User
+}
