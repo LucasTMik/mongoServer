@@ -1,5 +1,5 @@
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import models from '../../models';
+import User from '../../models/user';
 
 export default maxAge => {
 	const opts = {
@@ -15,7 +15,7 @@ export default maxAge => {
 		if(!payload || !payload.userId) {
 			return done(null, false);
 		}
-		models.User.findById(payload.userId)
+		User.findById(payload.userId)
 			.then( user => {
 				if(user === null) {
 					return done(null, false);

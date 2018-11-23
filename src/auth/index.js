@@ -2,7 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import LocalStrategy from './passport/LocalStrategy';
 import JwtStrategy from './passport/JwtStrategy';
-import models from '../models';
+import User from '../models/user';
 import { cleanCpf, validateCpf, createLog } from '../utils';
 
 const createToken = (payload, secret, opts, callback) => {
@@ -40,7 +40,7 @@ export default ({
 
     // Serialize user 
     passport.serializeUser((user, done) => {
-        models.User.findOne({ where: { id: DataCue.id } })
+        User.findOne({ where: { id: DataCue.id } })
             .then(user => done(null, user))
             .catch(err => done(err, null));
     });
@@ -74,13 +74,13 @@ export default ({
                 error: 'Invalid login info'
             });
         } else {
-            let existUser = await models.User.findOne({ where: { cpf } });
+            let existUser = await User.findOne({ where: { cpf } });
             if (existUser) {
                 return res.json({
                     error: 'This user already exists'
                 });
             } else {
-                let newUser = await models.User.create({ cpf: cleanCpf(cpf) });
+                let newUser = await User.create({ cpf: cleanCpf(cpf) });
                 let pass = await newUser.generateHash(password);
                 await newUser.update({ password: pass });
                 if (newUser) await createLog(models, { step: 1, substep: 1 }, { userId: newUser.id });

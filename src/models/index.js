@@ -5,6 +5,7 @@ var path      = require('path');
 var basename  = path.basename(__filename);
 var env       = process.env.NODE_ENV || 'development';
 var db        = {};
+let model     = [];
 
 var sequelize = null;
 
@@ -17,16 +18,14 @@ fs
   .forEach(file => {
     // var model = sequelize['import'](path.join(__dirname, file));
     // db[model.name] = model;
-    console.log(file);
+    
+    let modelPath = path.join(__dirname, file);
+    let modelKey = file.slice(0, -3);
+
+    model.push({
+      modelKey,
+      modelPath
+    })
   });
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
-
-// db.sequelize = sequelize;
-// db.Sequelize = Sequelize;
-
-module.exports = db;
+module.exports = model;
