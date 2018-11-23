@@ -67,11 +67,14 @@ export default ({
         }
     );
 
+    //PROBLEMA AO GERAAR A HASH.... OLHAR NOS SCHEMAS E TYPEDEFS
+
     router.post('/auth/signup', async (req, res, next) => {
         const { cpf, password } = req.body;
         if (!validateCpf(cpf) || !password || (password.length < 3)) {
+            console.log(cpf);
             return res.json({
-                error: 'Invalid login info'
+                error: 'Invalid login info',
             });
         } else {
             let existUser = await User.findOne({ where: { cpf } });
