@@ -20,8 +20,10 @@ input UpdateUserFCMTokenInput {
     token: String!
 }
 
+
 type Query {
     me: User
+    allUsers: [User!]!
     userById(userId: String!): User 
     userByCpf(userCpf: String!): User 
     cpfHasAccount(cpf: String!): Boolean 

@@ -4,6 +4,8 @@ import LocalStrategy from './passport/LocalStrategy';
 import JwtStrategy from './passport/JwtStrategy';
 import User from '../models/user';
 import { cleanCpf, validateCpf, createLog } from '../utils';
+import { generateHash } from '../core/usersCore';
+
 
 const createToken = (payload, secret, opts, callback) => {
     jwt.sign(payload, secret, opts, callback);
@@ -83,10 +85,15 @@ export default ({
                     error: 'This user already exists'
                 });
             } else {
-                let newUser = await User.create({ cpf: cleanCpf(cpf) });
-                let pass = await newUser.generateHash(password);
-                await newUser.update({ password: pass });
-                if (newUser) await createLog(models, { step: 1, substep: 1 }, { userId: newUser.id });
+
+                let pass = await generateHash(password);
+                //await newUser.update({ password: pass });
+                let newUser = await new User({
+                    cpf: cleanCpf(cpf),
+                    password: pass
+                })
+                newUser.save();
+                //if (newUser) await createLog(models, { step: 1, substep: 1 }, { userId: newUser.id });
 
                 return createToken({ userId: newUser.id }, secret, { expiresIn: maxAge }, (err, token) => {
                     if (err) next(err);
