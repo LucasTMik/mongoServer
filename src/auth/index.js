@@ -42,7 +42,7 @@ export default ({
 
     // Serialize user 
     passport.serializeUser((user, done) => {
-        User.findOne({ where: { id: DataCue.id } })
+        User.findOne({ id: DataCue.id })
             .then(user => done(null, user))
             .catch(err => done(err, null));
     });
@@ -69,8 +69,6 @@ export default ({
         }
     );
 
-    //PROBLEMA AO GERAAR A HASH.... OLHAR NOS SCHEMAS E TYPEDEFS
-
     router.post('/auth/signup', async (req, res, next) => {
         const { cpf, password } = req.body;
         if (!validateCpf(cpf) || !password || (password.length < 3)) {
@@ -79,7 +77,8 @@ export default ({
                 error: 'Invalid login info',
             });
         } else {
-            let existUser = await User.findOne({ where: { cpf } });
+            let cleanCpfValue = cleanCpf(cpf);
+            let existUser = await User.findOne({ cleanCpfValue });
             if (existUser) {
                 return res.json({
                     error: 'This user already exists'
@@ -89,9 +88,10 @@ export default ({
                 let pass = await generateHash(password);
                 //await newUser.update({ password: pass });
                 let newUser = await new User({
-                    cpf: cleanCpf(cpf),
+                    cpf: cleanCpfValue,
                     password: pass
                 })
+                newUser.id = newUser._id;
                 newUser.save();
                 //if (newUser) await createLog(models, { step: 1, substep: 1 }, { userId: newUser.id });
 

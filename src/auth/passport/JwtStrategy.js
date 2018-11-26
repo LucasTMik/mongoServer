@@ -15,7 +15,7 @@ export default maxAge => {
 		if(!payload || !payload.userId) {
 			return done(null, false);
 		}
-		User.findById(payload.userId)
+		User.findOne({ id: payload.userId })
 			.then( user => {
 				if(user === null) {
 					return done(null, false);

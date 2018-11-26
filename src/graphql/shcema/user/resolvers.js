@@ -8,13 +8,25 @@ import {
 import { cleanCpf, validateCpf, createLog } from '../../../utils';
 
 // Query type
-const me = baseResolver.createResolver(async (root, _, { user }) => {
+const me = isAuthenticatedResolver.createResolver(async (root, _, { user }) => {
     return user;
 })
 
-const allUsers = baseResolver.createResolver(async root => {
+const allUsers = isAuthenticatedResolver.createResolver(async root => {
     return User.find({});
 })
+
+const userById = isAuthenticatedResolver.createResolver(async (root, { userId }) => {
+    return User.findOne({ id: userId });
+});
+
+const userByCpf = isAuthenticatedResolver.createResolver(async (root, { userCpf }) => {
+    if(!validateCpf(userCpf))
+        return new InvalidDataError();
+    
+    let cleanCpfValue = cleanCpf(userCpf);
+    return User.findOne({ cpf: cleanCpfValue });
+});
 
 const registerUser = baseResolver.createResolver(async (root, { input }) => {
     const { cpf, deviceToken, password } = input;
@@ -31,7 +43,9 @@ const registerUser = baseResolver.createResolver(async (root, { input }) => {
 export default {
     Query: {
         me,
-        allUsers
+        allUsers,
+        userById,
+        userByCpf
     },
     Mutation: {
         registerUser

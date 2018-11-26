@@ -13,7 +13,7 @@ export default () => {
 		
 			const cleanCpfValue = cleanCpf(cpf);
 		
-			User.findOne({ where: { cpf: cleanCpfValue } })
+			User.findOne({ cpf: cleanCpfValue })
 				.then(user => {
 					if (user === null) {
 						return done(null, false);

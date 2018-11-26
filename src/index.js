@@ -16,6 +16,6 @@ process.on('uncaughtRejection', err => {
 const port = process.env.PORT || 4100;
 
 server.start({ port })
-.then(() => console.log(chalk.green(`Server listening at port ${ port }`)))
-.catch(err => console.log(err));
+    .then(() => console.log(chalk.green(`Server listening at port ${ port }`)))
+    .catch(err => console.log(err));
 
